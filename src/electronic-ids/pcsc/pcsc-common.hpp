@@ -125,7 +125,7 @@ inline pcsc_cpp::byte_vector internalAuthenticate(pcsc_cpp::SmartCard& card,
 {
     static const pcsc_cpp::CommandApdu INTERNAL_AUTHENTICATE {0x00, 0x88, 0x00, 0x00};
 
-    auto internalAuth = pcsc_cpp::CommandApdu {INTERNAL_AUTHENTICATE, hash};
+    auto internalAuth = pcsc_cpp::CommandApdu  {INTERNAL_AUTHENTICATE, hash};
     // LE is needed in case of protocol T1.
     // TODO: Implement this in libpcsc-cpp.
     if (card.protocol() == pcsc_cpp::SmartCard::Protocol::T1) {

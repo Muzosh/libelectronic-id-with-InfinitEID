@@ -41,12 +41,7 @@ public:
     using PinRetriesRemainingAndMax = std::pair<uint8_t, int8_t>;
     using Signature = std::pair<pcsc_cpp::byte_vector, SignatureAlgorithm>;
 
-    enum Type {
-        EstEID,
-        FinEID,
-        LatEID,
-        LitEID,
-    };
+    enum Type { EstEID, FinEID, LatEID, LitEID, CustomJavaCardv1 };
 
     virtual ~ElectronicID() = default;
 

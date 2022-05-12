@@ -1,6 +1,6 @@
 # libelectronic-id-with-custom-java-card
 * this repository is the fork of [web-eid/libelectronic-id](https://github.com/web-eid/libelectronic-id)
-* it includes the CustomJavaCard implementation so web-eid-app can work with TODO URL
+* it includes the CustomJavaCard implementation so web-eid-app can work with [CustomJavaCard applet](https://github.com/Muzosh/web-eid-javacard-applet)
 
 ## Installation
 ### Initialize Web-eID native application with CustomJavaCard implementation submodule

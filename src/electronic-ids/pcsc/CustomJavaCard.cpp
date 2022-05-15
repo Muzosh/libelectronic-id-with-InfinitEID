@@ -21,8 +21,8 @@ const std::vector<byte_vector> SELECT_SIGN_CERT_FILE = {
     {0x00, 0xA4, 0x02, 0x0C, 0x02, 0xDD, 0xCE},
 };
 
-// const byte_vector::value_type AUTH_PIN_REFERENCE = 0x01;
-// const byte_vector::value_type SIGNING_PIN_REFERENCE = 0x02;
+const byte_vector::value_type AUTH_PIN_REFERENCE = 0x01;
+const byte_vector::value_type SIGNING_PIN_REFERENCE = 0x02;
 
 } // namespace
 
@@ -38,15 +38,13 @@ byte_vector CustomJavaCard::getCertificateImpl(const CertificateType type) const
 byte_vector CustomJavaCard::signWithAuthKeyImpl(const byte_vector& pin,
                                                 const byte_vector& hash) const
 {
-    byte_vector temp = pin;
-    // verifyPin(*card, AUTH_PIN_REFERENCE, pin, authPinMinMaxLength().first, 0, 0);
+    verifyPin(*card, AUTH_PIN_REFERENCE, pin, authPinMinMaxLength().first, 0, 0);
     return internalAuthenticate(*card, hash, name());
 }
 
 ElectronicID::PinRetriesRemainingAndMax CustomJavaCard::authPinRetriesLeftImpl() const
 {
-    //return pinRetriesLeft(AUTH_PIN_REFERENCE);
-    return {3, 3};
+    return pinRetriesLeft(AUTH_PIN_REFERENCE);
 }
 
 const std::set<SignatureAlgorithm>& CustomJavaCard::supportedSigningAlgorithms() const
@@ -59,28 +57,26 @@ ElectronicID::Signature CustomJavaCard::signWithSigningKeyImpl(const byte_vector
                                                                const byte_vector& hash,
                                                                const HashAlgorithm hashAlgo) const
 {
-    byte_vector temp = pin;
-    // verifyPin(*card, SIGNING_PIN_REFERENCE, pin, signingPinMinMaxLength().first, 0, 0);
+    verifyPin(*card, SIGNING_PIN_REFERENCE, pin, signingPinMinMaxLength().first, 0, 0);
     return {computeSignature(*card, hash, name()), {SignatureAlgorithm::ES384, hashAlgo}};
 }
 
 ElectronicID::PinRetriesRemainingAndMax CustomJavaCard::signingPinRetriesLeftImpl() const
 {
-    // return pinRetriesLeft(SIGNING_PIN_REFERENCE);
-    return {3, 3};
+    return pinRetriesLeft(SIGNING_PIN_REFERENCE);
 }
 
 ElectronicID::PinRetriesRemainingAndMax
 CustomJavaCard::pinRetriesLeft(byte_vector::value_type pinReference) const
 {
-    const pcsc_cpp::CommandApdu GET_DATA {
-        0x00, 0xCB, 0x00, 0xFF, {0xA0, 0x03, 0x83, 0x01, pinReference}};
-    const auto response = card->transmit(GET_DATA);
+    const pcsc_cpp::CommandApdu GET_RETRIES_LEFT {
+        0x00, 0x26, 0x00, pinReference, pcsc_cpp::byte_vector(), 0x01};
+    const auto response = card->transmit(GET_RETRIES_LEFT);
     if (!response.isOK()) {
         THROW(SmartCardError,
               "Command GET DATA failed with error " + pcsc_cpp::bytes2hexstr(response.toBytes()));
     }
-    return {uint8_t(response.data[20]), int8_t(5)};
+    return {uint8_t(response.data[0]), uint8_t(response.data[1])};
 }
 
 } // namespace electronic_id

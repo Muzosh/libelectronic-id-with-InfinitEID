@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Estonian Information System Authority
+ * Copyright (c) 2020-2022 Estonian Information System Authority
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -46,6 +46,7 @@ public:
         FinEID,
         LatEID,
         LitEID,
+        HrvEID,
     };
 
     virtual ~ElectronicID() = default;
@@ -77,6 +78,7 @@ public:
                                          const HashAlgorithm hashAlgo) const = 0;
 
     // General functions.
+    virtual bool allowsUsingLettersInPin() const { return false; }
     virtual std::string name() const = 0;
     virtual Type type() const = 0;
 

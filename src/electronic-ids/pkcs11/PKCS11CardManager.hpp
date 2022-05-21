@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Estonian Information System Authority
+ * Copyright (c) 2020-2022 Estonian Information System Authority
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -317,6 +317,17 @@ private:
             THROW_WITH_CALLER_INFO(Pkcs11TokenRemoved,
                                    std::string(apiFunction) + ": token was removed", file, line,
                                    function);
+        case CKR_USER_NOT_LOGGED_IN: {
+            // Special case for C_Logout as it returns CKR_USER_NOT_LOGGED_IN with Croatian eID card
+            // when exiting sign().
+            const auto fn = std::string(apiFunction);
+            if (fn != "C_Logout") {
+                THROW_WITH_CALLER_INFO(Pkcs11Error,
+                                       fn + " failed with return code " + pcsc_cpp::int2hexstr(rv),
+                                       file, line, function);
+            };
+            break;
+        }
         default:
             THROW_WITH_CALLER_INFO(Pkcs11Error,
                                    std::string(apiFunction) + " failed with return code "

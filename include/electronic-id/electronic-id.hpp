@@ -47,7 +47,7 @@ public:
         LatEID,
         LitEID,
         HrvEID,
-        CustomJavaCardv1
+        InfinitEID
     };
 
     virtual ~ElectronicID() = default;

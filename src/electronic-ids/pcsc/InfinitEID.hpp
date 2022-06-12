@@ -5,10 +5,10 @@
 namespace electronic_id
 {
 
-class CustomJavaCard : public PcscElectronicID
+class InfinitEID : public PcscElectronicID
 {
 public:
-    CustomJavaCard(pcsc_cpp::SmartCard::ptr _card) : PcscElectronicID(std::move(_card)) {}
+    InfinitEID(pcsc_cpp::SmartCard::ptr _card) : PcscElectronicID(std::move(_card)) {}
 
 private:
     pcsc_cpp::byte_vector getCertificateImpl(const CertificateType type) const override;
@@ -24,8 +24,8 @@ private:
     PinMinMaxLength signingPinMinMaxLength() const override { return {6, 12}; }
     PinRetriesRemainingAndMax signingPinRetriesLeftImpl() const override;
 
-    std::string name() const override { return "CustomJavaCard v1"; }
-    Type type() const override { return CustomJavaCardv1; }
+    std::string name() const override { return "InfinitEID v1"; }
+    Type type() const override { return InfinitEID; }
 
     pcsc_cpp::byte_vector signWithAuthKeyImpl(const pcsc_cpp::byte_vector& pin,
                                               const pcsc_cpp::byte_vector& hash) const override;

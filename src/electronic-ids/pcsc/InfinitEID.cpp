@@ -1,4 +1,4 @@
-#include "CustomJavaCard.hpp"
+#include "InfinitEID.hpp"
 
 #include "pcsc-common.hpp"
 
@@ -29,31 +29,31 @@ const byte_vector::value_type SIGNING_PIN_REFERENCE = 0x02;
 namespace electronic_id
 {
 
-byte_vector CustomJavaCard::getCertificateImpl(const CertificateType type) const
+byte_vector InfinitEID::getCertificateImpl(const CertificateType type) const
 {
     return electronic_id::getCertificate(
         *card, type.isAuthentication() ? SELECT_AUTH_CERT_FILE : SELECT_SIGN_CERT_FILE);
 }
 
-byte_vector CustomJavaCard::signWithAuthKeyImpl(const byte_vector& pin,
+byte_vector InfinitEID::signWithAuthKeyImpl(const byte_vector& pin,
                                                 const byte_vector& hash) const
 {
     verifyPin(*card, AUTH_PIN_REFERENCE, pin, authPinMinMaxLength().first, 0, 0);
     return internalAuthenticate(*card, hash, name());
 }
 
-ElectronicID::PinRetriesRemainingAndMax CustomJavaCard::authPinRetriesLeftImpl() const
+ElectronicID::PinRetriesRemainingAndMax InfinitEID::authPinRetriesLeftImpl() const
 {
     return pinRetriesLeft(AUTH_PIN_REFERENCE);
 }
 
-const std::set<SignatureAlgorithm>& CustomJavaCard::supportedSigningAlgorithms() const
+const std::set<SignatureAlgorithm>& InfinitEID::supportedSigningAlgorithms() const
 {
     const static std::set<SignatureAlgorithm> ES_ALGOS = {SignatureAlgorithm::ES384};
     return ES_ALGOS;
 }
 
-ElectronicID::Signature CustomJavaCard::signWithSigningKeyImpl(const byte_vector& pin,
+ElectronicID::Signature InfinitEID::signWithSigningKeyImpl(const byte_vector& pin,
                                                                const byte_vector& hash,
                                                                const HashAlgorithm hashAlgo) const
 {
@@ -61,13 +61,13 @@ ElectronicID::Signature CustomJavaCard::signWithSigningKeyImpl(const byte_vector
     return {computeSignature(*card, hash, name()), {SignatureAlgorithm::ES384, hashAlgo}};
 }
 
-ElectronicID::PinRetriesRemainingAndMax CustomJavaCard::signingPinRetriesLeftImpl() const
+ElectronicID::PinRetriesRemainingAndMax InfinitEID::signingPinRetriesLeftImpl() const
 {
     return pinRetriesLeft(SIGNING_PIN_REFERENCE);
 }
 
 ElectronicID::PinRetriesRemainingAndMax
-CustomJavaCard::pinRetriesLeft(byte_vector::value_type pinReference) const
+InfinitEID::pinRetriesLeft(byte_vector::value_type pinReference) const
 {
     const pcsc_cpp::CommandApdu GET_RETRIES_LEFT {
         0x00, 0x26, 0x00, pinReference, pcsc_cpp::byte_vector(), 0x01};

@@ -24,8 +24,8 @@ private:
     PinMinMaxLength signingPinMinMaxLength() const override { return {6, 12}; }
     PinRetriesRemainingAndMax signingPinRetriesLeftImpl() const override;
 
-    std::string name() const override { return "InfinitEID v1"; }
-    Type type() const override { return InfinitEID; }
+    std::string name() const override { return "InfinitEID"; }
+    Type type() const override { return InfEID; }
 
     pcsc_cpp::byte_vector signWithAuthKeyImpl(const pcsc_cpp::byte_vector& pin,
                                               const pcsc_cpp::byte_vector& hash) const override;

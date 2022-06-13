@@ -7,6 +7,7 @@
 * `git clone https://github.com/web-eid/web-eid-app; cd web-eid-app`
 * `git submodule set-url lib/libelectronic-id https://github.com/Muzosh/libelectronic-id-with-InfinitEID.git`
 * `git submodule update --init --remote --recursive`
+* **change the ATR according to your card** in [here](https://github.com/Muzosh/libelectronic-id-with-InfinitEID/blob/b51be8ae005dc5d2f41be05085f6bf4d90988c52/src/electronic-id.cpp#L75-L78)
 
 ### Build modified Web-eID native application
 * follow the build instructions in [official Web-eID repository](https://github.com/web-eid/web-eid-app#building-and-testing)

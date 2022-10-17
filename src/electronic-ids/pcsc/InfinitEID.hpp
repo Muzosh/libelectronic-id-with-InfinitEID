@@ -39,7 +39,7 @@ private:
 
     JsonWebSignatureAlgorithm authSignatureAlgorithm() const override
     {
-        return JsonWebSignatureAlgorithm::ES384;
+        return JsonWebSignatureAlgorithm::ES256;
     }
     PinMinMaxLength authPinMinMaxLength() const override { return {4, 12}; }
     PinRetriesRemainingAndMax authPinRetriesLeftImpl() const override;

@@ -73,7 +73,7 @@ ElectronicID::PinRetriesRemainingAndMax InfinitEID::authPinRetriesLeftImpl() con
 
 const std::set<SignatureAlgorithm>& InfinitEID::supportedSigningAlgorithms() const
 {
-    const static std::set<SignatureAlgorithm> ES_ALGOS = {SignatureAlgorithm::ES384};
+    const static std::set<SignatureAlgorithm> ES_ALGOS = {SignatureAlgorithm::ES256};
     return ES_ALGOS;
 }
 
@@ -82,7 +82,7 @@ ElectronicID::Signature InfinitEID::signWithSigningKeyImpl(const byte_vector& pi
                                                                const HashAlgorithm hashAlgo) const
 {
     verifyPin(*card, SIGNING_PIN_REFERENCE, pin, signingPinMinMaxLength().first, 0, 0);
-    return {computeSignature(*card, hash, name()), {SignatureAlgorithm::ES384, hashAlgo}};
+    return {computeSignature(*card, hash, name()), {SignatureAlgorithm::ES256, hashAlgo}};
 }
 
 ElectronicID::PinRetriesRemainingAndMax InfinitEID::signingPinRetriesLeftImpl() const
